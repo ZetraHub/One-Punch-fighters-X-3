@@ -85,22 +85,22 @@ end)
 -- Inicia a função de atualização em uma nova thread
 coroutine.wrap(updateLeaderboard)()
 
--- Adiciona um parágrafo na aba Player para mostrar o nome do jogador e o ID em uma segunda linha
+-- Adiciona um parágrafo na aba Player para mostrar o nome do jogador
 Tabs.Player:AddParagraph({
     Title = "Info Player",
-    Content = "Player: " .. player.Name .. "\nID: " .. player.UserId -- Adiciona o nome e o ID do jogador
+    Content = "Player: " .. player.Name -- Adiciona o nome do jogador
 })
 
 -- Função para atualizar o parágrafo se necessário
-local function updatePlayerInfo()
+local function updatePlayerName()
     while true do
         wait(1) -- Atualiza a cada segundo (opcional, se necessário)
-        Tabs.Player:UpdateParagraph("Info Player", "Player: " .. player.Name .. "\nID: " .. player.UserId) -- Atualiza o nome e o ID do jogador
+        Tabs.Player:UpdateParagraph("Player: " .. player.Name) -- Atualiza o conteúdo com o nome do jogador
     end
 end
 
--- Inicia a atualização das informações em uma nova thread (opcional)
-spawn(updatePlayerInfo) -- Não é estritamente necessário, já que o nome e o ID não mudam frequentemente
+-- Inicia a atualização do nome em uma nova thread (opcional)
+spawn(updatePlayerName) -- Não é estritamente necessário, já que o nome não muda
 
 local RunService = game:GetService("RunService")
 
@@ -435,28 +435,54 @@ local Players = game:GetService("Players")
 
 -- Obtém o jogador local
 local player = Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local humanoid = character:WaitForChild("Humanoid")
+local defaultWalkSpeed = 23 -- Valor padrão do WalkSpeed
 
--- Define o valor padrão do WalkSpeed como 23
-local defaultWalkSpeed = 23
+-- Função para configurar o WalkSpeed e se registrar no humanoid
+local function setupWalkSpeed()
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoid = character:WaitForChild("Humanoid")
+
+    -- Atualiza o WalkSpeed conforme o estado do Toggle e o valor do Slider
+    if Toggle.Value then
+        humanoid.WalkSpeed = Slider.Value
+    else
+        humanoid.WalkSpeed = defaultWalkSpeed
+    end
+
+    -- Atualiza o WalkSpeed ao mover o Slider se o Toggle estiver ativado
+    Slider:SetCallback(function(Value)
+        if Toggle.Value then
+            humanoid.WalkSpeed = Value
+            print("WalkSpeed set to:", Value)
+        end
+    end)
+
+    -- Monitora a mudança do Toggle para ativar ou desativar o WalkSpeed
+    Toggle:OnChanged(function(Value)
+        if Value then
+            humanoid.WalkSpeed = Slider.Value
+            print("Toggle activated: WalkSpeed is now", humanoid.WalkSpeed)
+        else
+            humanoid.WalkSpeed = defaultWalkSpeed
+            print("Toggle deactivated: WalkSpeed reset to", humanoid.WalkSpeed)
+        end
+    end)
+end
+
+-- Configura o WalkSpeed ao inicializar o personagem e sempre que ele for recriado
+player.CharacterAdded:Connect(setupWalkSpeed)
+setupWalkSpeed() -- Chama a função inicialmente para configurar o WalkSpeed ao carregar
 
 -- Criação do Slider para ajustar o WalkSpeed na aba Player
 local Slider = Tabs.Player:AddSlider("WalkSpeedSlider", {
     Title = "WalkSpeed",
-    Default = humanoid.WalkSpeed, -- Define como o valor atual do WalkSpeed
+    Default = defaultWalkSpeed,
     Min = 0,
-    Max = 100, -- Você pode definir um valor máximo que achar adequado
-    Rounding = 1,
-    Callback = function(Value)
-        if Toggle.Value then -- Verifica se o toggle está ativado
-            humanoid.WalkSpeed = Value -- Atualiza o WalkSpeed apenas se o toggle estiver ativo
-            print("WalkSpeed set to:", Value) -- Imprime no console a nova velocidade
-        end
-    end
+    Max = 100,
+    Rounding = 1
 })
 
-Slider:SetValue(humanoid.WalkSpeed) -- Define um valor inicial para o slider
+Slider:SetValue(defaultWalkSpeed) -- Define o valor inicial do slider
 
 -- Criação do Toggle para ativar/desativar o WalkSpeed na aba Player
 local Toggle = Tabs.Player:AddToggle("MyToggle", {
@@ -464,18 +490,7 @@ local Toggle = Tabs.Player:AddToggle("MyToggle", {
     Default = false
 })
 
-Toggle:OnChanged(function(Value)
-    if Value then
-        humanoid.WalkSpeed = Slider.Value -- Quando ativado, define o WalkSpeed como o valor do slider
-        print("Toggle activated: WalkSpeed is now", humanoid.WalkSpeed)
-    else
-        humanoid.WalkSpeed = defaultWalkSpeed -- Quando desativado, volta o WalkSpeed ao valor padrão de 23
-        print("Toggle deactivated: WalkSpeed reset to", humanoid.WalkSpeed)
-    end
-end)
-
--- Definindo o estado inicial do Toggle
-Toggle:SetValue(false)
+Toggle:SetValue(false) -- Define o estado inicial do Toggle como desativado
 
 local InfiniteJumpSection = Tabs.Player:AddSection("Infinite Jump")
 
