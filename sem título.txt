@@ -104,10 +104,14 @@ spawn(updatePlayerName) -- Não é estritamente necessário, já que o nome não
 
 local RunService = game:GetService("RunService")
 
+local supportSection = Tabs.InfoScript:AddSection("support")
+
 Tabs.InfoScript:AddParagraph({
     Title = "Supported",
     Content = "- Mobile\n- PC\n- Emulator\n- Console"
 })
+
+local UpdatesSection = Tabs.InfoScript:AddSection("Updates 🟢")
 
 Tabs.InfoScript:AddParagraph({
     Title = "Updates",
