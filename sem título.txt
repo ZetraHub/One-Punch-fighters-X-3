@@ -24,7 +24,7 @@ local Window = Fluent:CreateWindow({
 
 local Tabs = {
     InfoScript = Window:AddTab({ Title = " ▎Info Script ", Icon = "scroll" }),
-    Main = Window:AddTab({ Title = "▎Combat", Icon = "home" }), 
+    Main = Window:AddTab({ Title = "▎Main", Icon = "home" }), 
     Others = Window:AddTab({ Title = "▎Others", Icon = "star" }),
     Teleports = Window:AddTab({ Title = "▎Teleports", Icon = "map" }),
     Visuals = Window:AddTab({ Title = "▎Visuals", Icon = "eye" }),
@@ -141,7 +141,7 @@ end)
 
 Options.MyToggle:SetValue(true)
 
-    Tabs.Combat:AddParagraph({
+    Tabs.Main:AddParagraph({
         Title = "Note",
         Content = "Auto Punch May Be Errorful"
     })
@@ -175,7 +175,7 @@ local function attackMobs()
     end
 end
 
-local AttackNPCToggle = Tabs.Combat:AddToggle("AttackNPCToggle", {
+local AttackNPCToggle = Tabs.Main:AddToggle("AttackNPCToggle", {
     Title = "Auto Punch",
     Default = false, 
     Callback = function(value)
@@ -186,11 +186,11 @@ local AttackNPCToggle = Tabs.Combat:AddToggle("AttackNPCToggle", {
     end
 })
 
-local UtilitiesSection = Tabs.Combat:AddSection("Utilities")
+local UtilitiesSection = Tabs.Main:AddSection("Utilities")
 
 local collecting = false
 
-local Toggle = Tabs.Combat:AddToggle("AutoCollectDrops", {
+local Toggle = Tabs.Main:AddToggle("AutoCollectDrops", {
     Title = "Auto Collect All Drops",
     Default = false
 })
@@ -222,7 +222,7 @@ Options.AutoCollectDrops:SetValue(false)
 
 local autoClaimRewards = false
 
-local Toggle = Tabs.Combat:AddToggle("AutoClaimTimeRewards", {
+local Toggle = Tabs.Main:AddToggle("AutoClaimTimeRewards", {
     Title = "Auto Claim Time Rewards",
     Default = false
 })
@@ -256,7 +256,7 @@ Toggle:OnChanged(function()
     end
 end)
 
-Tabs.Combat:AddButton({
+Tabs.Main:AddButton({
     Title = "Redeem All Codes",
     Callback = function()
         -- List of codes to redeem
@@ -286,7 +286,7 @@ Tabs.Combat:AddButton({
 
 local autoEquipBestPet = false
 
-local Toggle = Tabs.Combat:AddToggle("AutoEquipBestPet", {
+local Toggle = Tabs.Main:AddToggle("AutoEquipBestPet", {
     Title = "Auto Equip Best Pet",
     Default = false
 })
