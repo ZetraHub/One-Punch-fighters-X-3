@@ -111,7 +111,7 @@ Tabs.InfoScript:AddParagraph({
     Content = "- Mobile\n- PC\n- Emulator\n- Console"
 })
 
-local UpdatesSection = Tabs.InfoScript:AddSection("Updates 🟢")
+local UpdatesSection = Tabs.InfoScript:AddSection("Updates")
 
 Tabs.InfoScript:AddParagraph({
     Title = "Updates",
