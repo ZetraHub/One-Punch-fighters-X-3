@@ -433,7 +433,7 @@ local character = player.Character or player.CharacterAdded:Wait()
 local humanoid = character:WaitForChild("Humanoid")
 
 -- Define o valor padrão do WalkSpeed como 23
-local defaultWalkSpeed = 23
+local defaultWalkSpeed = 0
 
 -- Criação do Slider para ajustar o WalkSpeed na aba Player
 local Slider = Tabs.Player:AddSlider("WalkSpeedSlider", {
