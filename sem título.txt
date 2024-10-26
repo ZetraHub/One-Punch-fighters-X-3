@@ -14,7 +14,7 @@ local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.
 
 local Window = Fluent:CreateWindow({
     Title = "One Punch Fighters X By Zetra Hub",
-    SubTitle = "Latest Version",
+    SubTitle = "first version",
     TabWidth = 135,
     Size = UDim2.fromOffset(438, 352),
     Acrylic = true, 
@@ -128,7 +128,7 @@ Tabs.InfoScript:AddParagraph({
 local linkParaCopiar = "https://youtube.com/@zetrascripts?si=suM_heCy4O_X-P4H"
 
 Tabs.InfoScript:AddButton({
-    Title = "Click to copy",
+    Title = "Youtube Channel",
     Description = "copy the link and paste into your browser",
     Callback = function()
         setclipboard(linkParaCopiar)
@@ -780,7 +780,43 @@ end)
 
 Options.ShowNameDistance:SetValue(false)
 
--- Others
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Options = {} -- Adicione sua tabela de opções, se necessário
+
+-- Substitua "NomeDoSeuItem" pelo nome do item que você deseja invocar
+local itemToSummon = ReplicatedStorage:WaitForChild("NomeDoSeuItem")
+
+-- Função para invocar o item
+local function summonItem(player)
+    local character = player.Character or player.CharacterAdded:Wait()
+    local itemClone = itemToSummon:Clone()
+    itemClone.Parent = character
+    itemClone.Position = character.HumanoidRootPart.Position + Vector3.new(0, 5, 0) -- Ajusta a posição do item
+end
+
+local function autoSummon()
+    for _, player in ipairs(Players:GetPlayers()) do
+        summonItem(player)
+    end
+end
+
+-- Configurar o Toggle
+local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Auto Summon", Default = false })
+
+Toggle:OnChanged(function(newValue)
+    if newValue then
+        print("Auto Summon ativado")
+        while Toggle.Value do
+            autoSummon()
+            wait(10) -- Aguarda 10 segundos antes de invocar novamente
+        end
+    else
+        print("Auto Summon desativado")
+    end
+end)
+
+Options.MyToggle = Toggle
 
 SaveManager:SetLibrary(Fluent)
 InterfaceManager:SetLibrary(Fluent)
