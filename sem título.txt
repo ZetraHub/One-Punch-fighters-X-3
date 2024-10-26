@@ -8,7 +8,7 @@ end
 
 -- Seu código aqui
 
-local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua#80FF00"))()
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
@@ -24,7 +24,7 @@ local Window = Fluent:CreateWindow({
 
 local Tabs = {
     InfoScript = Window:AddTab({ Title = " ▎Info Script ", Icon = "scroll" }),
-    Main = Window:AddTab({ Title = "▎Main", Icon = "home" }), 
+    Combat = Window:AddTab({ Title = "▎Combat", Icon = "swords" }), 
     Others = Window:AddTab({ Title = "▎Others", Icon = "star" }),
     Teleports = Window:AddTab({ Title = "▎Teleports", Icon = "map" }),
     Visuals = Window:AddTab({ Title = "▎Visuals", Icon = "eye" }),
@@ -141,7 +141,7 @@ end)
 
 Options.MyToggle:SetValue(true)
 
-    Tabs.Main:AddParagraph({
+    Tabs.Combat:AddParagraph({
         Title = "Note",
         Content = "Auto Punch May Be Errorful"
     })
@@ -175,7 +175,7 @@ local function attackMobs()
     end
 end
 
-local AttackNPCToggle = Tabs.Main:AddToggle("AttackNPCToggle", {
+local AttackNPCToggle = Tabs.Combat:AddToggle("AttackNPCToggle", {
     Title = "Auto Punch",
     Default = false, 
     Callback = function(value)
@@ -186,11 +186,11 @@ local AttackNPCToggle = Tabs.Main:AddToggle("AttackNPCToggle", {
     end
 })
 
-local UtilitiesSection = Tabs.Main:AddSection("Utilities")
+local UtilitiesSection = Tabs.Combat:AddSection("Utilities")
 
 local collecting = false
 
-local Toggle = Tabs.Main:AddToggle("AutoCollectDrops", {
+local Toggle = Tabs.Combat:AddToggle("AutoCollectDrops", {
     Title = "Auto Collect All Drops",
     Default = false
 })
@@ -222,7 +222,7 @@ Options.AutoCollectDrops:SetValue(false)
 
 local autoClaimRewards = false
 
-local Toggle = Tabs.Main:AddToggle("AutoClaimTimeRewards", {
+local Toggle = Tabs.Combat:AddToggle("AutoClaimTimeRewards", {
     Title = "Auto Claim Time Rewards",
     Default = false
 })
@@ -256,7 +256,7 @@ Toggle:OnChanged(function()
     end
 end)
 
-Tabs.Main:AddButton({
+Tabs.Combat:AddButton({
     Title = "Redeem All Codes",
     Callback = function()
         -- List of codes to redeem
@@ -286,7 +286,7 @@ Tabs.Main:AddButton({
 
 local autoEquipBestPet = false
 
-local Toggle = Tabs.Main:AddToggle("AutoEquipBestPet", {
+local Toggle = Tabs.Combat:AddToggle("AutoEquipBestPet", {
     Title = "Auto Equip Best Pet",
     Default = false
 })
