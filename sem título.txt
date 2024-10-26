@@ -85,22 +85,22 @@ end)
 -- Inicia a função de atualização em uma nova thread
 coroutine.wrap(updateLeaderboard)()
 
--- Adiciona um parágrafo na aba Player para mostrar o nome do jogador
+-- Adiciona um parágrafo na aba Player para mostrar o nome do jogador e o ID em uma segunda linha
 Tabs.Player:AddParagraph({
     Title = "Info Player",
-    Content = "Player: " .. player.Name -- Adiciona o nome do jogador
+    Content = "Player: " .. player.Name .. "\nID: " .. player.UserId -- Adiciona o nome e o ID do jogador
 })
 
 -- Função para atualizar o parágrafo se necessário
-local function updatePlayerName()
+local function updatePlayerInfo()
     while true do
         wait(1) -- Atualiza a cada segundo (opcional, se necessário)
-        Tabs.Player:UpdateParagraph("Player: " .. player.Name) -- Atualiza o conteúdo com o nome do jogador
+        Tabs.Player:UpdateParagraph("Info Player", "Player: " .. player.Name .. "\nID: " .. player.UserId) -- Atualiza o nome e o ID do jogador
     end
 end
 
--- Inicia a atualização do nome em uma nova thread (opcional)
-spawn(updatePlayerName) -- Não é estritamente necessário, já que o nome não muda
+-- Inicia a atualização das informações em uma nova thread (opcional)
+spawn(updatePlayerInfo) -- Não é estritamente necessário, já que o nome e o ID não mudam frequentemente
 
 local RunService = game:GetService("RunService")
 
