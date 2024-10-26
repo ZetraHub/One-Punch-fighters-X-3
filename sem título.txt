@@ -13,9 +13,9 @@ local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/d
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
 local Window = Fluent:CreateWindow({
-    Title = "One Punch Fighters X  ▎By Zetra Hub",
+    Title = "One Punch Fighters X By Zetra Hub",
     SubTitle = "Latest Version",
-    TabWidth = 130,
+    TabWidth = 135,
     Size = UDim2.fromOffset(425, 352),
     Acrylic = true, 
     Theme = "Dark",
@@ -423,7 +423,7 @@ Tabs.Teleports:AddButton({
 local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
 
-local WalkSpeedSection = Tabs.Player:AddSection("Walk Speed")
+local WalkSpeedSection = Tabs.Player:AddSection("WalkSpeed")
 
 local Players = game:GetService("Players")
 
