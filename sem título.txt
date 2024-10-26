@@ -136,6 +136,47 @@ Tabs.InfoScript:AddButton({
     end
 })
 
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Options = {} -- Certifique-se de que a tabela Options esteja definida corretamente
+
+-- Substitua "NomeDoSeuItem" pelo nome do item que você deseja invocar
+local itemToSummon = ReplicatedStorage:WaitForChild("NomeDoSeuItem")
+
+-- Função para invocar o item
+local function summonItem(player)
+    local character = player.Character or player.CharacterAdded:Wait()
+    local itemClone = itemToSummon:Clone()
+    itemClone.Parent = character
+    itemClone.Position = character.HumanoidRootPart.Position + Vector3.new(0, 5, 0) -- Ajusta a posição do item
+end
+
+-- Função de Auto Summon
+local function autoSummon()
+    while Options.AutoSummonToggle.Value do
+        for _, player in ipairs(Players:GetPlayers()) do
+            summonItem(player)
+        end
+        wait(10) -- Aguarda 10 segundos antes de invocar novamente
+    end
+end
+
+-- Configurar o Toggle na aba Others
+local AutoSummonToggle = Tabs.Others:AddToggle("AutoSummonToggle", {Title = "Auto Summon", Default = false })
+
+AutoSummonToggle:OnChanged(function(newValue)
+    Options.AutoSummonToggle = AutoSummonToggle -- Armazena o estado do toggle em Options
+    if newValue then
+        print("Auto Summon ativado")
+        autoSummon() -- Chama a função de Auto Summon
+    else
+        print("Auto Summon desativado")
+    end
+end)
+
+-- Inicialize o estado do toggle
+Options.AutoSummonToggle = AutoSummonToggle -- Certifique-se de que a tabela Options tenha a referência correta
+
 local AntiAFKEnabled = true
 
 local Toggle = Tabs.Others:AddToggle("MyToggle", {Title = "Anti AFK", Default = true})
@@ -289,44 +330,6 @@ Tabs.Main:AddButton({
         redeemCodes()
     end
 })
-
-local Players = game:GetService("Players")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Options = {} -- Adicione sua tabela de opções, se necessário
-
--- Substitua "NomeDoSeuItem" pelo nome do item que você deseja invocar
-local itemToSummon = ReplicatedStorage:WaitForChild("NomeDoSeuItem")
-
--- Função para invocar o item
-local function summonItem(player)
-    local character = player.Character or player.CharacterAdded:Wait()
-    local itemClone = itemToSummon:Clone()
-    itemClone.Parent = character
-    itemClone.Position = character.HumanoidRootPart.Position + Vector3.new(0, 5, 0) -- Ajusta a posição do item
-end
-
-local function autoSummon()
-    for _, player in ipairs(Players:GetPlayers()) do
-        summonItem(player)
-    end
-end
-
--- Configurar o Toggle
-local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Auto Summon", Default = false })
-
-Toggle:OnChanged(function(newValue)
-    if newValue then
-        print("Auto Summon ativado")
-        while Toggle.Value do
-            autoSummon()
-            wait(10) -- Aguarda 10 segundos antes de invocar novamente
-        end
-    else
-        print("Auto Summon desativado")
-    end
-end)
-
-Options.MyToggle = Toggle
 
 local autoEquipBestPet = false
 
