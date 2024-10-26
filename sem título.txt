@@ -34,46 +34,32 @@ local Tabs = {
 
 local Options = Fluent.Options
 
+-- Carregar a imagem do botão
+local buttonImage = "rbxassetid://105828890696121" -- ID da sua imagem
+local isOpen = true -- Estado da UI
+
+-- Criação do botão de imagem para alternar a UI
+local toggleButton = Instance.new("ImageButton")
+toggleButton.Size = UDim2.new(0, 50, 0, 50) -- Tamanho do botão
+toggleButton.Position = UDim2.new(0, 10, 0, 10) -- Posição do botão
+toggleButton.Image = buttonImage
+toggleButton.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("ScreenGui") -- Ajuste conforme sua estrutura de GUI
+
+toggleButton.MouseButton1Click:Connect(function()
+    isOpen = not isOpen
+    if isOpen then
+        Window:Show() -- Mostra a janela
+    else
+        Window:Hide() -- Esconde a janela
+    end
+end)
+
 Fluent:Notify({
     Title = "By ZetraScripts YT",
     Content = "thanks for using the script",
     SubContent = "",
     Duration = 5
 })
-
-local Toggle = Tabs.Combat:AddToggle("MyToggle", {Title = "Magnet Drops", Default = false })
-
-Toggle:OnChanged(function()
-    if Toggle.Value then
-        print("Magnet Drops ativado.")
-        -- Inicia a coleta de itens
-        collectItems()
-    else
-        print("Magnet Drops desativado.")
-    end
-end)
-
-Options.MyToggle:SetValue(false)
-
--- Função para coletar itens
-function collectItems()
-    local player = game.Players.LocalPlayer
-    local character = player.Character or player.CharacterAdded:Wait()
-    local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-    local range = 15 -- A distância máxima para coletar os itens
-
-    while Toggle.Value do
-        wait(0.1) -- Ajuste o tempo de espera se necessário
-        for _, item in ipairs(workspace:GetChildren()) do
-            if item:IsA("Part") and item:FindFirstChild("ClickDetector") then
-                local distance = (item.Position - humanoidRootPart.Position).Magnitude
-                if distance < range then
-                    fireclickdetector(item.ClickDetector) -- Aciona o detector de clique do item
-                end
-            end
-        end
-    end
-end
 
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
