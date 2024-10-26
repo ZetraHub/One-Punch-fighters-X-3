@@ -114,7 +114,7 @@ Tabs.InfoScript:AddParagraph({
     Content = "- 26/10/2024"
 })
 
-local InfoScriptSection = Tabs.InfoScript:AddSection("YouTube")
+local YoutubeSection = Tabs.InfoScript:AddSection("YouTube")
 
 Tabs.InfoScript:AddParagraph({
     Title = "Credits Script",
