@@ -16,7 +16,7 @@ local Window = Fluent:CreateWindow({
     Title = "One Punch Fighters X By Zetra Hub",
     SubTitle = "Latest Version",
     TabWidth = 135,
-    Size = UDim2.fromOffset(436, 352),
+    Size = UDim2.fromOffset(438, 352),
     Acrylic = true, 
     Theme = "Dark",
     MinimizeKey = Enum.KeyCode.LeftControl
@@ -433,7 +433,7 @@ local character = player.Character or player.CharacterAdded:Wait()
 local humanoid = character:WaitForChild("Humanoid")
 
 -- Define o valor padrão do WalkSpeed como 23
-local defaultWalkSpeed = 0
+local defaultWalkSpeed = 23
 
 -- Criação do Slider para ajustar o WalkSpeed na aba Player
 local Slider = Tabs.Player:AddSlider("WalkSpeedSlider", {
