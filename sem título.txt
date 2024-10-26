@@ -26,6 +26,7 @@ local Tabs = {
     InfoScript = Window:AddTab({ Title = " ▎Info Script ", Icon = "scroll" }),
     Main = Window:AddTab({ Title = "▎Main", Icon = "home" }), 
     Others = Window:AddTab({ Title = "▎Others", Icon = "star" }),
+    Eggs  = Window:AddTab({ Title = "▎Eggs", Icon = "egg" }), 
     Teleports = Window:AddTab({ Title = "▎Teleports", Icon = "map" }),
     Visuals = Window:AddTab({ Title = "▎Visuals", Icon = "eye" }),
     Player = Window:AddTab({ Title = "▎Player", Icon = "user" }),
@@ -162,7 +163,7 @@ local function autoSummon()
 end
 
 -- Configurar o Toggle na aba Others
-local AutoSummonToggle = Tabs.Others:AddToggle("AutoSummonToggle", {Title = "Auto Summon", Default = false })
+local AutoSummonToggle = Tabs.Eggs:AddToggle("AutoSummonToggle", {Title = "Auto Summon", Default = false })
 
 AutoSummonToggle:OnChanged(function(newValue)
     Options.AutoSummonToggle = AutoSummonToggle -- Armazena o estado do toggle em Options
