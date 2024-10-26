@@ -34,26 +34,6 @@ local Tabs = {
 
 local Options = Fluent.Options
 
--- Carregar a imagem do botão
-local buttonImage = "rbxassetid://105828890696121" -- ID da sua imagem
-local isOpen = true -- Estado da UI
-
--- Criação do botão de imagem para alternar a UI
-local toggleButton = Instance.new("ImageButton")
-toggleButton.Size = UDim2.new(0, 50, 0, 50) -- Tamanho do botão
-toggleButton.Position = UDim2.new(0, 10, 0, 10) -- Posição do botão
-toggleButton.Image = buttonImage
-toggleButton.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("ScreenGui") -- Ajuste conforme sua estrutura de GUI
-
-toggleButton.MouseButton1Click:Connect(function()
-    isOpen = not isOpen
-    if isOpen then
-        Window:Show() -- Mostra a janela
-    else
-        Window:Hide() -- Esconde a janela
-    end
-end)
-
 Fluent:Notify({
     Title = "By ZetraScripts YT",
     Content = "thanks for using the script",
