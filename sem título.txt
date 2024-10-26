@@ -864,8 +864,7 @@ end)
 -- Set the initial state of the toggle
 Options.AutoDeployToggle:SetValue(false)
 
--- Adiciona o toggle de Magnet Drops na aba Others existente
-local Toggle = Tabs.Others:AddToggle("MyToggle", {Title = "Magnet Drops", Default = false })
+local Toggle = Tabs.Combat:AddToggle("MyToggle", {Title = "Magnet Drops", Default = false })
 
 Toggle:OnChanged(function()
     if Toggle.Value then
