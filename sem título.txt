@@ -3,7 +3,7 @@ local placeId = game.PlaceId
 local allowedPlaceId = 18463280776 -- ID do lugar
 
 if placeId ~= allowedPlaceId then
-    return -- Não faz nada se o jogo não for o permitido
+    return -- Não faz nada se o jogo não for o permitid
 end
 
 -- Seu código aqui
