@@ -15,8 +15,8 @@ local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.
 local Window = Fluent:CreateWindow({
     Title = "One Punch Fighters X  ▎By Zetra Hub",
     SubTitle = "Latest Version",
-    TabWidth = 160,
-    Size = UDim2.fromOffset(500, 385),
+    TabWidth = 130,
+    Size = UDim2.fromOffset(460, 385),
     Acrylic = true, 
     Theme = "Dark",
     MinimizeKey = Enum.KeyCode.LeftControl
@@ -775,94 +775,6 @@ end)
 Options.ShowNameDistance:SetValue(false)
 
 -- Others
-
-local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local mobsFolder = workspace:WaitForChild("Mobs") -- Ajuste o caminho se necessário
-local teleporting = false -- Variável para controlar o teleporte
-
--- Função para teleportar o personagem para uma posição específica
-local function teleportTo(position)
-    if character and character:FindFirstChild("HumanoidRootPart") then
-        character.HumanoidRootPart.CFrame = CFrame.new(position)
-    end
-end
-
--- Função para iniciar o teleporte para os mobs
-local function startTeleporting()
-    teleporting = true
-    while teleporting do
-        for _, mob in pairs(mobsFolder:GetChildren()) do
-            if not teleporting then break end -- Interrompe o loop se o toggle for desativado
-            if mob:IsA("Model") and mob:FindFirstChild("HumanoidRootPart") then
-                local mobPosition = mob.HumanoidRootPart.Position
-                teleportTo(mobPosition)
-                wait(0.5) -- Espera meio segundo antes de ir para o próximo mob
-            end
-        end
-        wait(1) -- Espera um segundo antes de reiniciar o ciclo
-    end
-end
-
--- Função para parar o teleporte
-local function stopTeleporting()
-    teleporting = false
-end
-
--- Adiciona o toggle na aba "Others" para controlar o teleporte
-local Toggle = Tabs.Others:AddToggle("MyToggle", {Title = "Toggle", Default = false })
-
-Toggle:OnChanged(function()
-    if Options.MyToggle.Value then
-        startTeleporting() -- Inicia o teleporte quando o toggle é ativado
-    else
-        stopTeleporting() -- Para o teleporte quando o toggle é desativado
-    end
-end)
-
-Options.MyToggle:SetValue(false)
-
--- Variable to control the state of Auto Deploy
-local autoDeployActive = false
-
--- Function that will be called repeatedly during Auto Deploy
-local function performAction()
-    -- Place the action you want to perform here
-    print("Auto Deploy action is running...")
-end
-
--- Function to enable or disable Auto Deploy
-local function toggleAutoDeploy(state)
-    autoDeployActive = state
-
-    if autoDeployActive then
-        print("Auto Deploy activated")
-        
-        -- Start a parallel task for Auto Deploy
-        spawn(function()
-            while autoDeployActive do
-                -- Execute the desired action
-                performAction()
-
-                -- Wait for 1 second before repeating (adjust the interval as needed)
-                wait(1)
-            end
-        end)
-    else
-        print("Auto Deploy deactivated")
-    end
-end
-
--- Adding the toggle to enable/disable Auto Deploy in the Others tab
-local Toggle = Tabs.Others:AddToggle("AutoDeployToggle", {Title = "Auto Deploy", Default = false })
-
-Toggle:OnChanged(function()
-    -- Call the toggleAutoDeploy function with the current state of the toggle
-    toggleAutoDeploy(Options.AutoDeployToggle.Value)
-end)
-
--- Set the initial state of the toggle
-Options.AutoDeployToggle:SetValue(false)
 
 SaveManager:SetLibrary(Fluent)
 InterfaceManager:SetLibrary(Fluent)
