@@ -114,6 +114,8 @@ Tabs.InfoScript:AddParagraph({
     Content = "- 26/10/2024"
 })
 
+local InfoScriptSection = Tabs.InfoScript:AddSection("YouTube")
+
 Tabs.InfoScript:AddParagraph({
     Title = "Credits Script",
     Content = "- YouTube ZetraScripts"
