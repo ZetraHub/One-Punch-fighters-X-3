@@ -24,7 +24,7 @@ local Window = Fluent:CreateWindow({
 
 local Tabs = {
     InfoScript = Window:AddTab({ Title = " ▎Info Script ", Icon = "scroll" }),
-    Combat = Window:AddTab({ Title = "▎Combat", Icon = "swords" }), 
+    Main = Window:AddTab({ Title = "▎Combat", Icon = "home" }), 
     Others = Window:AddTab({ Title = "▎Others", Icon = "star" }),
     Teleports = Window:AddTab({ Title = "▎Teleports", Icon = "map" }),
     Visuals = Window:AddTab({ Title = "▎Visuals", Icon = "eye" }),
