@@ -15,8 +15,8 @@ local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.
 local Window = Fluent:CreateWindow({
     Title = "One Punch Fighters X  ▎By Zetra Hub",
     SubTitle = "Latest Version",
-    TabWidth = 160,
-    Size = UDim2.fromOffset(500, 385),
+    TabWidth = 135,
+    Size = UDim2.fromOffset(440, 353),
     Acrylic = true, 
     Theme = "Dark",
     MinimizeKey = Enum.KeyCode.LeftControl
@@ -617,6 +617,49 @@ Tabs.Teleports:AddButton({
         teleportToCoordinates(Vector3.new(-1600, 207, -285))
     end
 })
+
+local EspSection = Tabs.Visuals:AddSection("Esp")
+
+local Toggle = Tabs.Visuals:AddToggle("BoxToggle", {Title = "Player Box ESP", Default = false })
+
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+local function createBox(player)
+    local box = Instance.new("BoxHandleAdornment")
+    box.Adornee = player.Character:WaitForChild("HumanoidRootPart") -- Coloca a caixa no corpo do jogador
+    box.Size = Vector3.new(4, 6, 2) -- Tamanho da caixa (ajuste conforme necessário)
+    box.Color3 = Color3.fromRGB(255, 255, 255) -- Cor da caixa (branco)
+    box.Transparency = 0.5 -- Transparência da caixa
+    box.ZIndex = 5 -- ZIndex para garantir que a caixa fique visível
+    box.AlwaysOnTop = true
+    box.Parent = player.Character.HumanoidRootPart
+
+    -- Atualiza a posição da caixa se o personagem mudar
+    player.CharacterAdded:Connect(function(newCharacter)
+        box.Adornee = newCharacter:WaitForChild("HumanoidRootPart")
+    end)
+
+    return box
+end
+
+local function updateBoxes()
+    for _, player in pairs(Players:GetPlayers()) do
+        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            createBox(player)
+        end
+    end
+end
+
+Toggle:OnChanged(function(value)
+    if value then
+        -- Iniciar as caixas para todos os jogadores existentes
+        updateBoxes()
+
+        -- Adicionar caixas para novos jogadores que entram no jogo
+        Players.PlayerAdded:Connect(function(player)
+            player.CharacterAdded:Connect(function()
+                creat
 
 SaveManager:SetLibrary(Fluent)
 InterfaceManager:SetLibrary(Fluent)
