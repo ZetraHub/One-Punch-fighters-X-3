@@ -776,52 +776,6 @@ Options.ShowNameDistance:SetValue(false)
 
 -- Others
 
-local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local mobsFolder = workspace:WaitForChild("Mobs") -- Ajuste o caminho se necessário
-local teleporting = false -- Variável para controlar o teleporte
-
--- Função para teleportar o personagem para uma posição específica
-local function teleportTo(position)
-    if character and character:FindFirstChild("HumanoidRootPart") then
-        character.HumanoidRootPart.CFrame = CFrame.new(position)
-    end
-end
-
--- Função para iniciar o teleporte para os mobs
-local function startTeleporting()
-    teleporting = true
-    while teleporting do
-        for _, mob in pairs(mobsFolder:GetChildren()) do
-            if not teleporting then break end -- Interrompe o loop se o toggle for desativado
-            if mob:IsA("Model") and mob:FindFirstChild("HumanoidRootPart") then
-                local mobPosition = mob.HumanoidRootPart.Position
-                teleportTo(mobPosition)
-                wait(0.5) -- Espera meio segundo antes de ir para o próximo mob
-            end
-        end
-        wait(1) -- Espera um segundo antes de reiniciar o ciclo
-    end
-end
-
--- Função para parar o teleporte
-local function stopTeleporting()
-    teleporting = false
-end
-
--- Adiciona o toggle na aba "Others" para controlar o teleporte
-local Toggle = Tabs.Others:AddToggle("MyToggle", {Title = "Toggle", Default = false })
-
-Toggle:OnChanged(function()
-    if Options.MyToggle.Value then
-        startTeleporting() -- Inicia o teleporte quando o toggle é ativado
-    else
-        stopTeleporting() -- Para o teleporte quando o toggle é desativado
-    end
-end)
-
-Options.MyToggle:SetValue(false)
-
 SaveManager:SetLibrary(Fluent)
 InterfaceManager:SetLibrary(Fluent)
 
