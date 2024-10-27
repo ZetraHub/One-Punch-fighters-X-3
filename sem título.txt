@@ -366,7 +366,8 @@ local Dropdown = Tabs.Teleports:AddDropdown("Dropdown", {
         "Zone 1", 
         "Zone 2",
         "Zone 3",
-        "Zone 4" -- Nova zona adicionada
+        "Zone 4",
+        "Zone 5" -- Nova zona adicionada
     },
     Multi = false,
     Default = 1,
@@ -381,7 +382,7 @@ Tabs.Teleports:AddButton({
         local targetPosition
 
         -- Obter a coordenada selecionada no dropdown
-        local selectedValue = Dropdown.Value  -- Acessa o valor diretamente
+        local selectedValue = Dropdown.Value
 
         if selectedValue == "Zone 1" then
             targetPosition = Vector3.new(-1535, 207, -251)
@@ -390,7 +391,9 @@ Tabs.Teleports:AddButton({
         elseif selectedValue == "Zone 3" then
             targetPosition = Vector3.new(-1454, 207, 114)
         elseif selectedValue == "Zone 4" then
-            targetPosition = Vector3.new(1265, 207, 125) -- Nova coordenada
+            targetPosition = Vector3.new(1265, 207, 125)
+        elseif selectedValue == "Zone 5" then
+            targetPosition = Vector3.new(1116, 207, 336) -- Coordenada da nova zona
         end
 
         -- Verifica se a posição de destino foi definida
@@ -407,7 +410,7 @@ Tabs.Teleports:AddButton({
     end
 })
 
-local Halloween Section = Tabs.Teleports:AddSection("World Halloween")
+local HalloweenSection = Tabs.Teleports:AddSection("World Halloween")
 
 Tabs.Teleports:AddButton({
     Title = "Event",
@@ -432,6 +435,8 @@ Tabs.Teleports:AddButton({
         end
     end
 })
+
+-- WalkSpeed 
 
 local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
