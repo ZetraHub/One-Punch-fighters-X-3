@@ -13,10 +13,10 @@ local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/d
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
 local Window = Fluent:CreateWindow({
-    Title = "One Punch Fighters X By Zetra Hub",
-    SubTitle = "first version",
-    TabWidth = 135,
-    Size = UDim2.fromOffset(440, 352),
+    Title = "One Punch Fighters X  ▎By Zetra Hub",
+    SubTitle = "Latest Version",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(500, 385),
     Acrylic = true, 
     Theme = "Dark",
     MinimizeKey = Enum.KeyCode.LeftControl
@@ -24,9 +24,10 @@ local Window = Fluent:CreateWindow({
 
 local Tabs = {
     InfoScript = Window:AddTab({ Title = " ▎Info Script ", Icon = "scroll" }),
-    Main = Window:AddTab({ Title = "▎Main", Icon = "home" }), 
+    Combat = Window:AddTab({ Title = "▎Combat", Icon = "swords" }), 
     Others = Window:AddTab({ Title = "▎Others", Icon = "star" }),
     Teleports = Window:AddTab({ Title = "▎Teleports", Icon = "map" }),
+    Visuals = Window:AddTab({ Title = "▎Visuals", Icon = "eye" }),
     Player = Window:AddTab({ Title = "▎Player", Icon = "user" }),
     Settings = Window:AddTab({ Title = "▎UI Settings", Icon = "settings" }),
 }
@@ -103,21 +104,15 @@ spawn(updatePlayerName) -- Não é estritamente necessário, já que o nome não
 
 local RunService = game:GetService("RunService")
 
-local supportSection = Tabs.InfoScript:AddSection("support")
-
 Tabs.InfoScript:AddParagraph({
     Title = "Supported",
     Content = "- Mobile\n- PC\n- Emulator\n- Console"
 })
 
-local UpdatesSection = Tabs.InfoScript:AddSection("Updates")
-
 Tabs.InfoScript:AddParagraph({
     Title = "Updates",
     Content = "- 26/10/2024"
 })
-
-local YoutubeSection = Tabs.InfoScript:AddSection("YouTube")
 
 Tabs.InfoScript:AddParagraph({
     Title = "Credits Script",
@@ -127,7 +122,7 @@ Tabs.InfoScript:AddParagraph({
 local linkParaCopiar = "https://youtube.com/@zetrascripts?si=suM_heCy4O_X-P4H"
 
 Tabs.InfoScript:AddButton({
-    Title = "Youtube Channel",
+    Title = "Click to copy",
     Description = "copy the link and paste into your browser",
     Callback = function()
         setclipboard(linkParaCopiar)
@@ -146,7 +141,7 @@ end)
 
 Options.MyToggle:SetValue(true)
 
-    Tabs.Main:AddParagraph({
+    Tabs.Combat:AddParagraph({
         Title = "Note",
         Content = "Auto Punch May Be Errorful"
     })
@@ -180,7 +175,7 @@ local function attackMobs()
     end
 end
 
-local AttackNPCToggle = Tabs.Main:AddToggle("AttackNPCToggle", {
+local AttackNPCToggle = Tabs.Combat:AddToggle("AttackNPCToggle", {
     Title = "Auto Punch",
     Default = false, 
     Callback = function(value)
@@ -191,11 +186,11 @@ local AttackNPCToggle = Tabs.Main:AddToggle("AttackNPCToggle", {
     end
 })
 
-local UtilitiesSection = Tabs.Main:AddSection("Utilities")
+local UtilitiesSection = Tabs.Combat:AddSection("Utilities")
 
 local collecting = false
 
-local Toggle = Tabs.Main:AddToggle("AutoCollectDrops", {
+local Toggle = Tabs.Combat:AddToggle("AutoCollectDrops", {
     Title = "Auto Collect All Drops",
     Default = false
 })
@@ -227,7 +222,7 @@ Options.AutoCollectDrops:SetValue(false)
 
 local autoClaimRewards = false
 
-local Toggle = Tabs.Main:AddToggle("AutoClaimTimeRewards", {
+local Toggle = Tabs.Combat:AddToggle("AutoClaimTimeRewards", {
     Title = "Auto Claim Time Rewards",
     Default = false
 })
@@ -261,7 +256,7 @@ Toggle:OnChanged(function()
     end
 end)
 
-Tabs.Main:AddButton({
+Tabs.Combat:AddButton({
     Title = "Redeem All Codes",
     Callback = function()
         -- List of codes to redeem
@@ -291,7 +286,7 @@ Tabs.Main:AddButton({
 
 local autoEquipBestPet = false
 
-local Toggle = Tabs.Main:AddToggle("AutoEquipBestPet", {
+local Toggle = Tabs.Combat:AddToggle("AutoEquipBestPet", {
     Title = "Auto Equip Best Pet",
     Default = false
 })
@@ -428,7 +423,136 @@ Tabs.Teleports:AddButton({
 local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
 
--- WalkSpeed 
+local WalkSpeedSection = Tabs.Player:AddSection("Walk Speed")
+
+local Players = game:GetService("Players")
+
+-- Obtém o jogador local
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+
+-- Define o valor padrão do WalkSpeed como 23
+local defaultWalkSpeed = 23
+
+-- Criação do Slider para ajustar o WalkSpeed na aba Player
+local Slider = Tabs.Player:AddSlider("WalkSpeedSlider", {
+    Title = "Walk Speed",
+    Default = humanoid.WalkSpeed, -- Define como o valor atual do WalkSpeed
+    Min = 0,
+    Max = 100, -- Você pode definir um valor máximo que achar adequado
+    Rounding = 1,
+    Callback = function(Value)
+        if Toggle.Value then -- Verifica se o toggle está ativado
+            humanoid.WalkSpeed = Value -- Atualiza o WalkSpeed apenas se o toggle estiver ativo
+            print("WalkSpeed set to:", Value) -- Imprime no console a nova velocidade
+        end
+    end
+})
+
+Slider:SetValue(humanoid.WalkSpeed) -- Define um valor inicial para o slider
+
+-- Criação do Toggle para ativar/desativar o WalkSpeed na aba Player
+local Toggle = Tabs.Player:AddToggle("MyToggle", {
+    Title = "Apply WalkSpeed",
+    Default = false
+})
+
+Toggle:OnChanged(function(Value)
+    if Value then
+        humanoid.WalkSpeed = Slider.Value -- Quando ativado, define o WalkSpeed como o valor do slider
+        print("Toggle activated: WalkSpeed is now", humanoid.WalkSpeed)
+    else
+        humanoid.WalkSpeed = defaultWalkSpeed -- Quando desativado, volta o WalkSpeed ao valor padrão de 23
+        print("Toggle deactivated: WalkSpeed reset to", humanoid.WalkSpeed)
+    end
+end)
+
+-- Definindo o estado inicial do Toggle
+Toggle:SetValue(false)
+
+local InfiniteJumpSection = Tabs.Player:AddSection("Infinite Jump")
+
+local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+
+-- Obtém o jogador local
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+
+-- Criação do Toggle para ativar/desativar Infinite Jump e Noclip na aba Player
+local JumpNoclipToggle = Tabs.Player:AddToggle("JumpNoclipToggle", {
+    Title = "Infinite Jump & Noclip",
+    Default = false
+})
+
+-- Variável para controlar o estado do Infinite Jump
+local canJump = false
+
+-- Função para lidar com o salto
+local function onJumpRequest()
+    if JumpNoclipToggle.Value and canJump then
+        humanoid:ChangeState(Enum.HumanoidStateType.Jumping) -- Faz o personagem pular
+    end
+end
+
+-- Conectar o evento de pulo ao Humanoid
+UserInputService.JumpRequest:Connect(onJumpRequest)
+
+-- Função para atualizar o Noclip
+local function updateNoclip()
+    if JumpNoclipToggle.Value then
+        for _, part in ipairs(character:GetChildren()) do
+            if part:IsA("BasePart") then
+                part.CanCollide = false -- Permite que o personagem atravesse objetos
+            end
+        end
+        print("Noclip activated.")
+    else
+        for _, part in ipairs(character:GetChildren()) do
+            if part:IsA("BasePart") then
+                part.CanCollide = true -- Restaura a colisão
+            end
+        end
+        print("Noclip deactivated.")
+    end
+end
+
+-- Conectar o evento do Toggle
+JumpNoclipToggle:OnChanged(function(Value)
+    if Value then
+        canJump = true -- Habilita o infinite jump
+        print("Infinite Jump activated.")
+    else
+        canJump = false -- Desabilita o infinite jump
+        updateNoclip() -- Atualiza o noclip ao desativar
+        print("Infinite Jump deactivated.")
+    end
+end)
+
+-- Atualiza o Noclip em tempo real enquanto o Toggle estiver ativado
+RunService.Stepped:Connect(function()
+    if JumpNoclipToggle.Value then
+        updateNoclip() -- Atualiza a colisão durante o jogo
+    end
+end)
+
+-- Definindo o estado inicial do Toggle
+JumpNoclipToggle:SetValue(false)
+
+local ExtraSection = Tabs.Player:AddSection("Extra") 
+
+-- Criação do botão que carrega o script externo
+Tabs.Player:AddButton({
+    Title = "Infinite Yield",
+    Callback = function()
+        print("Loading script...")
+        -- Carrega o script externo
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source', true))()
+    end
+})
 
 local NpcsSection = Tabs.Teleports:AddSection("NPCs")
 
@@ -481,6 +605,222 @@ Tabs.Teleports:AddButton({
 })
 
 -- Visuals
+
+local EspSection = Tabs.Visuals:AddSection("Esp")
+
+local Toggle = Tabs.Visuals:AddToggle("BoxToggle", {Title = "Player Box ESP", Default = false })
+
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+local function createBox(player)
+    local box = Instance.new("BoxHandleAdornment")
+    box.Adornee = player.Character:WaitForChild("HumanoidRootPart") -- Coloca a caixa no corpo do jogador
+    box.Size = Vector3.new(4, 6, 2) -- Tamanho da caixa (ajuste conforme necessário)
+    box.Color3 = Color3.fromRGB(255, 255, 255) -- Cor da caixa (branco)
+    box.Transparency = 0.5 -- Transparência da caixa
+    box.ZIndex = 5 -- ZIndex para garantir que a caixa fique visível
+    box.AlwaysOnTop = true
+    box.Parent = player.Character.HumanoidRootPart
+
+    -- Atualiza a posição da caixa se o personagem mudar
+    player.CharacterAdded:Connect(function(newCharacter)
+        box.Adornee = newCharacter:WaitForChild("HumanoidRootPart")
+    end)
+
+    return box
+end
+
+local function updateBoxes()
+    for _, player in pairs(Players:GetPlayers()) do
+        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            createBox(player)
+        end
+    end
+end
+
+Toggle:OnChanged(function(value)
+    if value then
+        -- Iniciar as caixas para todos os jogadores existentes
+        updateBoxes()
+
+        -- Adicionar caixas para novos jogadores que entram no jogo
+        Players.PlayerAdded:Connect(function(player)
+            player.CharacterAdded:Connect(function()
+                createBox(player)
+            end)
+        end)
+
+        print("Box ESP Enabled")
+    else
+        -- Desativar boxes (remover adornos)
+        for _, player in pairs(Players:GetPlayers()) do
+            if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                local box = player.Character.HumanoidRootPart:FindFirstChildOfClass("BoxHandleAdornment")
+                if box then
+                    box:Destroy()
+                end
+            end
+        end
+        print("Box ESP Disabled")
+    end
+end)
+
+Options.BoxToggle:SetValue(false)
+
+local Players = game:GetService("Players")
+local Camera = workspace.CurrentCamera
+local RunService = game:GetService("RunService")
+
+local Toggle = Tabs.Visuals:AddToggle("MyToggle", {Title = "ESP All Players ", Default = false })
+
+local function createESP(player)
+    local highlight = Instance.new("Highlight")
+    highlight.Parent = player.Character or player.CharacterAdded:Wait()
+    highlight.FillColor = Color3.fromRGB(255, 0, 0) -- Red color
+    highlight.OutlineColor = Color3.fromRGB(255, 255, 255) -- White outline color
+    highlight.OutlineTransparency = 0 -- Fully visible outline
+
+    -- Update highlight if the character is recreated
+    player.CharacterAdded:Connect(function(newCharacter)
+        highlight.Parent = newCharacter
+    end)
+end
+
+Toggle:OnChanged(function(value)
+    if value then
+        -- Enable ESP for all players
+        for _, player in pairs(game.Players:GetPlayers()) do
+            createESP(player)
+        end
+
+        -- Enable ESP for new players who join
+        game.Players.PlayerAdded:Connect(createESP)
+        print("ESP Enabled")
+    else
+        -- Disable ESP for all players (remove highlights)
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player.Character and player.Character:FindFirstChild("Highlight") then
+                player.Character.Highlight:Destroy()
+            end
+        end
+        print("ESP Disabled")
+    end
+end)
+
+Options.MyToggle:SetValue(false)
+
+local showNameDistance = false
+
+local Toggle = Tabs.Visuals:AddToggle("ShowNameDistance", {
+    Title = "Show Name & Distance",
+    Default = false
+})
+
+Toggle:OnChanged(function()
+    showNameDistance = Options.ShowNameDistance.Value
+    print("Show Name & Distance Toggle changed:", showNameDistance)
+
+    if showNameDistance then
+        -- Iniciar a exibição do nome e distância
+        spawn(function()
+            while showNameDistance do
+                for _, player in pairs(game.Players:GetPlayers()) do
+                    if player ~= game.Players.LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                        local localPlayer = game.Players.LocalPlayer
+                        local localCharacter = localPlayer.Character
+                        local humanoidRootPart = player.Character.HumanoidRootPart
+                        local distance = (localCharacter.HumanoidRootPart.Position - humanoidRootPart.Position).Magnitude
+
+                        -- Criar BillboardGui para exibir o nome e a distância
+                        if not humanoidRootPart:FindFirstChild("NameDistanceTag") then
+                            local billboardGui = Instance.new("BillboardGui", humanoidRootPart)
+                            billboardGui.Name = "NameDistanceTag"
+                            billboardGui.Size = UDim2.new(0, 200, 0, 50)
+                            billboardGui.StudsOffset = Vector3.new(0, 3, 0)
+                            billboardGui.AlwaysOnTop = true
+
+                            local textLabel = Instance.new("TextLabel", billboardGui)
+                            textLabel.Size = UDim2.new(1, 0, 1, 0)
+                            textLabel.BackgroundTransparency = 1
+                            textLabel.TextColor3 = Color3.new(1, 1, 1)
+                            textLabel.TextStrokeTransparency = 0
+                            textLabel.TextSize = 14
+                            textLabel.Font = Enum.Font.SourceSansBold
+                        end
+
+                        -- Atualizar o texto com o nome e a distância
+                        local tag = humanoidRootPart:FindFirstChild("NameDistanceTag")
+                        if tag then
+                            tag.TextLabel.Text = player.Name .. " | " .. math.floor(distance) .. " studs"
+                        end
+                    end
+                end
+                wait(1) -- Atualiza a cada segundo
+            end
+        end)
+    else
+        -- Desativar e remover as tags de nome e distância
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                local tag = player.Character.HumanoidRootPart:FindFirstChild("NameDistanceTag")
+                if tag then
+                    tag:Destroy()
+                end
+            end
+        end
+    end
+end)
+
+Options.ShowNameDistance:SetValue(false)
+
+-- Others
+
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local mobsFolder = workspace:WaitForChild("Mobs") -- Ajuste o caminho se necessário
+local teleporting = false -- Variável para controlar o teleporte
+
+-- Função para teleportar o personagem para uma posição específica
+local function teleportTo(position)
+    if character and character:FindFirstChild("HumanoidRootPart") then
+        character.HumanoidRootPart.CFrame = CFrame.new(position)
+    end
+end
+
+-- Função para iniciar o teleporte para os mobs
+local function startTeleporting()
+    teleporting = true
+    while teleporting do
+        for _, mob in pairs(mobsFolder:GetChildren()) do
+            if not teleporting then break end -- Interrompe o loop se o toggle for desativado
+            if mob:IsA("Model") and mob:FindFirstChild("HumanoidRootPart") then
+                local mobPosition = mob.HumanoidRootPart.Position
+                teleportTo(mobPosition)
+                wait(0.5) -- Espera meio segundo antes de ir para o próximo mob
+            end
+        end
+        wait(1) -- Espera um segundo antes de reiniciar o ciclo
+    end
+end
+
+-- Função para parar o teleporte
+local function stopTeleporting()
+    teleporting = false
+end
+
+-- Adiciona o toggle na aba "Others" para controlar o teleporte
+local Toggle = Tabs.Others:AddToggle("MyToggle", {Title = "Toggle", Default = false })
+
+Toggle:OnChanged(function()
+    if Options.MyToggle.Value then
+        startTeleporting() -- Inicia o teleporte quando o toggle é ativado
+    else
+        stopTeleporting() -- Para o teleporte quando o toggle é desativado
+    end
+end)
+
+Options.MyToggle:SetValue(false)
 
 SaveManager:SetLibrary(Fluent)
 InterfaceManager:SetLibrary(Fluent)
