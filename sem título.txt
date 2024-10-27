@@ -27,7 +27,6 @@ local Tabs = {
     Combat = Window:AddTab({ Title = "▎Combat", Icon = "swords" }), 
     Others = Window:AddTab({ Title = "▎Others", Icon = "star" }),
     Teleports = Window:AddTab({ Title = "▎Teleports", Icon = "map" }),
-    Visuals = Window:AddTab({ Title = "▎Visuals", Icon = "eye" }),
     Player = Window:AddTab({ Title = "▎Player", Icon = "user" }),
     Settings = Window:AddTab({ Title = "▎Settings", Icon = "settings" }),
 }
