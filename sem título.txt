@@ -567,7 +567,9 @@ Tabs.Player:AddButton({
     end
 })
 
-local NpcsSection = Tabs.Teleports:AddSection("NPCs")
+-- Npcs
+
+local NPCsSection = Tabs.Teleports:AddSection("NPCs")
 
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
@@ -583,37 +585,41 @@ local function teleportToCoordinates(targetPosition)
     end
 end
 
--- Criação do botão para teleporte na aba Teleports para a primeira coordenada
-Tabs.Teleports:AddButton({
-    Title = "Craft Key",
-    Callback = function()
-        teleportToCoordinates(Vector3.new(-1572, 207, -404))
-    end
+-- Lista de coordenadas e nomes para o dropdown
+local locations = {
+    ["Craft Key"] = Vector3.new(-1572, 207, -404),
+    ["Defense"] = Vector3.new(-1591, 207, -426),
+    ["Defense Halloween"] = Vector3.new(5038, 75, -1056),
+    ["Quest"] = Vector3.new(-1600, 207, -285),
+    ["Child Emperor"] = Vector3.new(-1067, 207, 331),
+}
+
+-- Criação do dropdown para teletransporte na aba Teleports
+local Dropdown = Tabs.Teleports:AddDropdown("TeleportsDropdown", {
+    Title = "Teleport Locations",
+    Values = {"Craft Key", "Defense", "Defense Halloween", "Quest", "Child Emperor"},
+    Multi = false,
+    Default = 1,
 })
 
--- Criação do botão para teleporte na aba Teleports para a segunda coordenada
-Tabs.Teleports:AddButton({
-    Title = "Defense",
-    Callback = function()
-        teleportToCoordinates(Vector3.new(-1591, 207, -426))
-    end
-})
+-- Variável para armazenar a localização selecionada
+local selectedLocation = "Craft Key"
 
+-- Ação quando o valor do dropdown for alterado
+Dropdown:OnChanged(function(Value)
+    selectedLocation = Value
+end)
+
+-- Criação do botão de teleporte na aba Teleports
 Tabs.Teleports:AddButton({
-    Title = "Defense Halloween",
+    Title = "Teleport",
     Callback = function()
-        local player = game.Players.LocalPlayer
-        if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-            player.Character.HumanoidRootPart.CFrame = CFrame.new(5038, 75, -1056)
+        local targetPosition = locations[selectedLocation]
+        if targetPosition then
+            teleportToCoordinates(targetPosition)
+        else
+            print("Invalid teleport location selected.")
         end
-    end
-})
-
--- Criação do novo botão para teleporte na aba Teleports para a terceira coordenada
-Tabs.Teleports:AddButton({
-    Title = "Quest",
-    Callback = function()
-        teleportToCoordinates(Vector3.new(-1600, 207, -285))
     end
 })
 
