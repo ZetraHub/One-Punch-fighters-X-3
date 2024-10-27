@@ -431,6 +431,66 @@ local Players = game:GetService("Players")
 
 -- WalkSpeed 
 
+local WalkSpeedSection = Tabs.Player:AddSection("WalkSpeed")
+
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local defaultWalkSpeed = 23
+
+-- Criação do Slider para ajustar o WalkSpeed na aba Player
+local Slider = Tabs.Player:AddSlider("WalkSpeedSlider", {
+    Title = "WalkSpeed",
+    Default = defaultWalkSpeed,
+    Min = 0,
+    Max = 100,
+    Rounding = 1
+})
+
+Slider:SetValue(defaultWalkSpeed)
+
+-- Criação do Toggle para ativar/desativar o WalkSpeed na aba Player
+local Toggle = Tabs.Player:AddToggle("MyToggle", {
+    Title = "Apply WalkSpeed",
+    Default = false
+})
+
+Toggle:SetValue(false)
+
+-- Função para configurar o WalkSpeed e se registrar no Humanoid
+local function setupWalkSpeed()
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoid = character:WaitForChild("Humanoid")
+
+    -- Atualiza o WalkSpeed conforme o estado do Toggle e o valor do Slider
+    local function updateWalkSpeed()
+        if Toggle.Value then
+            humanoid.WalkSpeed = Slider.Value
+        else
+            humanoid.WalkSpeed = defaultWalkSpeed
+        end
+    end
+
+    updateWalkSpeed() -- Chama para garantir a configuração inicial
+
+    -- Atualiza o WalkSpeed ao mover o Slider se o Toggle estiver ativado
+    Slider:SetCallback(function(Value)
+        if Toggle.Value then
+            humanoid.WalkSpeed = Value
+            print("WalkSpeed set to:", Value)
+        end
+    end)
+
+    -- Monitora a mudança do Toggle para ativar ou desativar o WalkSpeed
+    Toggle:OnChanged(function(Value)
+        updateWalkSpeed() -- Atualiza o WalkSpeed conforme o novo estado do Toggle
+        print("Toggle changed: WalkSpeed is now", humanoid.WalkSpeed)
+    end)
+end
+
+-- Configura o WalkSpeed ao inicializar o personagem e sempre que ele for recriado
+player.CharacterAdded:Connect(setupWalkSpeed)
+setupWalkSpeed() -- Chama a função inicialmente para configurar o WalkSpeed ao carregar
+
 local InfiniteJumpSection = Tabs.Player:AddSection("Infinite Jump")
 
 local Players = game:GetService("Players")
