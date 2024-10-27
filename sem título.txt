@@ -29,7 +29,7 @@ local Tabs = {
     Teleports = Window:AddTab({ Title = "▎Teleports", Icon = "map" }),
     Visuals = Window:AddTab({ Title = "▎Visuals", Icon = "eye" }),
     Player = Window:AddTab({ Title = "▎Player", Icon = "user" }),
-    Settings = Window:AddTab({ Title = "▎UI Settings", Icon = "settings" }),
+    Settings = Window:AddTab({ Title = "▎Settings", Icon = "settings" }),
 }
 
 local Options = Fluent.Options
@@ -40,6 +40,8 @@ Fluent:Notify({
     SubContent = "",
     Duration = 5
 })
+
+-- aba Player
 
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
@@ -104,15 +106,23 @@ spawn(updatePlayerName) -- Não é estritamente necessário, já que o nome não
 
 local RunService = game:GetService("RunService")
 
+-- Aba Info Script
+
+local SupportSection = Tabs.InfoScript:AddSection("Support")
+
 Tabs.InfoScript:AddParagraph({
     Title = "Supported",
     Content = "- Mobile\n- PC\n- Emulator\n- Console"
 })
 
+local UpdatesSection = Tabs.InfoScript:AddSection("Updates")
+
 Tabs.InfoScript:AddParagraph({
     Title = "Updates",
     Content = "- 26/10/2024"
 })
+
+local YoutubeSection = Tabs.InfoScript:AddSection("Youtube")
 
 Tabs.InfoScript:AddParagraph({
     Title = "Credits Script",
@@ -122,13 +132,15 @@ Tabs.InfoScript:AddParagraph({
 local linkParaCopiar = "https://youtube.com/@zetrascripts?si=suM_heCy4O_X-P4H"
 
 Tabs.InfoScript:AddButton({
-    Title = "Click to copy",
+    Title = "Youtube Channel",
     Description = "copy the link and paste into your browser",
     Callback = function()
         setclipboard(linkParaCopiar)
         print("Link copied to clipboard.")
     end
 })
+
+-- Anti Afk
 
 local AntiAFKEnabled = true
 
@@ -140,6 +152,8 @@ Toggle:OnChanged(function()
 end)
 
 Options.MyToggle:SetValue(true)
+
+-- Combat
 
     Tabs.Combat:AddParagraph({
         Title = "Note",
@@ -603,178 +617,6 @@ Tabs.Teleports:AddButton({
         teleportToCoordinates(Vector3.new(-1600, 207, -285))
     end
 })
-
--- Visuals
-
-local EspSection = Tabs.Visuals:AddSection("Esp")
-
-local Toggle = Tabs.Visuals:AddToggle("BoxToggle", {Title = "Player Box ESP", Default = false })
-
-local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
-
-local function createBox(player)
-    local box = Instance.new("BoxHandleAdornment")
-    box.Adornee = player.Character:WaitForChild("HumanoidRootPart") -- Coloca a caixa no corpo do jogador
-    box.Size = Vector3.new(4, 6, 2) -- Tamanho da caixa (ajuste conforme necessário)
-    box.Color3 = Color3.fromRGB(255, 255, 255) -- Cor da caixa (branco)
-    box.Transparency = 0.5 -- Transparência da caixa
-    box.ZIndex = 5 -- ZIndex para garantir que a caixa fique visível
-    box.AlwaysOnTop = true
-    box.Parent = player.Character.HumanoidRootPart
-
-    -- Atualiza a posição da caixa se o personagem mudar
-    player.CharacterAdded:Connect(function(newCharacter)
-        box.Adornee = newCharacter:WaitForChild("HumanoidRootPart")
-    end)
-
-    return box
-end
-
-local function updateBoxes()
-    for _, player in pairs(Players:GetPlayers()) do
-        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-            createBox(player)
-        end
-    end
-end
-
-Toggle:OnChanged(function(value)
-    if value then
-        -- Iniciar as caixas para todos os jogadores existentes
-        updateBoxes()
-
-        -- Adicionar caixas para novos jogadores que entram no jogo
-        Players.PlayerAdded:Connect(function(player)
-            player.CharacterAdded:Connect(function()
-                createBox(player)
-            end)
-        end)
-
-        print("Box ESP Enabled")
-    else
-        -- Desativar boxes (remover adornos)
-        for _, player in pairs(Players:GetPlayers()) do
-            if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-                local box = player.Character.HumanoidRootPart:FindFirstChildOfClass("BoxHandleAdornment")
-                if box then
-                    box:Destroy()
-                end
-            end
-        end
-        print("Box ESP Disabled")
-    end
-end)
-
-Options.BoxToggle:SetValue(false)
-
-local Players = game:GetService("Players")
-local Camera = workspace.CurrentCamera
-local RunService = game:GetService("RunService")
-
-local Toggle = Tabs.Visuals:AddToggle("MyToggle", {Title = "ESP All Players ", Default = false })
-
-local function createESP(player)
-    local highlight = Instance.new("Highlight")
-    highlight.Parent = player.Character or player.CharacterAdded:Wait()
-    highlight.FillColor = Color3.fromRGB(255, 0, 0) -- Red color
-    highlight.OutlineColor = Color3.fromRGB(255, 255, 255) -- White outline color
-    highlight.OutlineTransparency = 0 -- Fully visible outline
-
-    -- Update highlight if the character is recreated
-    player.CharacterAdded:Connect(function(newCharacter)
-        highlight.Parent = newCharacter
-    end)
-end
-
-Toggle:OnChanged(function(value)
-    if value then
-        -- Enable ESP for all players
-        for _, player in pairs(game.Players:GetPlayers()) do
-            createESP(player)
-        end
-
-        -- Enable ESP for new players who join
-        game.Players.PlayerAdded:Connect(createESP)
-        print("ESP Enabled")
-    else
-        -- Disable ESP for all players (remove highlights)
-        for _, player in pairs(game.Players:GetPlayers()) do
-            if player.Character and player.Character:FindFirstChild("Highlight") then
-                player.Character.Highlight:Destroy()
-            end
-        end
-        print("ESP Disabled")
-    end
-end)
-
-Options.MyToggle:SetValue(false)
-
-local showNameDistance = false
-
-local Toggle = Tabs.Visuals:AddToggle("ShowNameDistance", {
-    Title = "Show Name & Distance",
-    Default = false
-})
-
-Toggle:OnChanged(function()
-    showNameDistance = Options.ShowNameDistance.Value
-    print("Show Name & Distance Toggle changed:", showNameDistance)
-
-    if showNameDistance then
-        -- Iniciar a exibição do nome e distância
-        spawn(function()
-            while showNameDistance do
-                for _, player in pairs(game.Players:GetPlayers()) do
-                    if player ~= game.Players.LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-                        local localPlayer = game.Players.LocalPlayer
-                        local localCharacter = localPlayer.Character
-                        local humanoidRootPart = player.Character.HumanoidRootPart
-                        local distance = (localCharacter.HumanoidRootPart.Position - humanoidRootPart.Position).Magnitude
-
-                        -- Criar BillboardGui para exibir o nome e a distância
-                        if not humanoidRootPart:FindFirstChild("NameDistanceTag") then
-                            local billboardGui = Instance.new("BillboardGui", humanoidRootPart)
-                            billboardGui.Name = "NameDistanceTag"
-                            billboardGui.Size = UDim2.new(0, 200, 0, 50)
-                            billboardGui.StudsOffset = Vector3.new(0, 3, 0)
-                            billboardGui.AlwaysOnTop = true
-
-                            local textLabel = Instance.new("TextLabel", billboardGui)
-                            textLabel.Size = UDim2.new(1, 0, 1, 0)
-                            textLabel.BackgroundTransparency = 1
-                            textLabel.TextColor3 = Color3.new(1, 1, 1)
-                            textLabel.TextStrokeTransparency = 0
-                            textLabel.TextSize = 14
-                            textLabel.Font = Enum.Font.SourceSansBold
-                        end
-
-                        -- Atualizar o texto com o nome e a distância
-                        local tag = humanoidRootPart:FindFirstChild("NameDistanceTag")
-                        if tag then
-                            tag.TextLabel.Text = player.Name .. " | " .. math.floor(distance) .. " studs"
-                        end
-                    end
-                end
-                wait(1) -- Atualiza a cada segundo
-            end
-        end)
-    else
-        -- Desativar e remover as tags de nome e distância
-        for _, player in pairs(game.Players:GetPlayers()) do
-            if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-                local tag = player.Character.HumanoidRootPart:FindFirstChild("NameDistanceTag")
-                if tag then
-                    tag:Destroy()
-                end
-            end
-        end
-    end
-end)
-
-Options.ShowNameDistance:SetValue(false)
-
--- Others
 
 SaveManager:SetLibrary(Fluent)
 InterfaceManager:SetLibrary(Fluent)
