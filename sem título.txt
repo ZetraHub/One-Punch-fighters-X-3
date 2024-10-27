@@ -13,8 +13,8 @@ local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/d
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
 local Window = Fluent:CreateWindow({
-    Title = "One Punch Fighters X  ▎By Zetra Hub",
-    SubTitle = "Latest Version",
+    Title = "One Punch Fighters X  ▎By Zetra Hub  ▎First Version",
+    SubTitle = "",
     TabWidth = 135,
     Size = UDim2.fromOffset(440, 352),
     Acrylic = true, 
