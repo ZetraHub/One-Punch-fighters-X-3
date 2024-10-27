@@ -590,14 +590,14 @@ local locations = {
     ["Craft Key"] = Vector3.new(-1572, 207, -404),
     ["Defense"] = Vector3.new(-1591, 207, -426),
     ["Defense Halloween"] = Vector3.new(5038, 75, -1056),
-    ["Quest"] = Vector3.new(-1600, 207, -285),
+    ["Tatsu"] = Vector3.new(-1600, 207, -285),
     ["Child Emperor"] = Vector3.new(-1067, 207, 331),
 }
 
 -- Criação do dropdown para teletransporte na aba Teleports
 local Dropdown = Tabs.Teleports:AddDropdown("TeleportsDropdown", {
-    Title = "Teleport Locations",
-    Values = {"Craft Key", "Defense", "Defense Halloween", "Quest", "Child Emperor"},
+    Title = "Select NPC",
+    Values = {"Craft Key", "Defense", "Defense Halloween", "Tatsu", "Child Emperor"},
     Multi = false,
     Default = 1,
 })
