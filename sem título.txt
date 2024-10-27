@@ -16,7 +16,7 @@ local Window = Fluent:CreateWindow({
     Title = "One Punch Fighters X By Zetra Hub",
     SubTitle = "first version",
     TabWidth = 135,
-    Size = UDim2.fromOffset(438, 352),
+    Size = UDim2.fromOffset(440, 352),
     Acrylic = true, 
     Theme = "Dark",
     MinimizeKey = Enum.KeyCode.LeftControl
@@ -27,7 +27,6 @@ local Tabs = {
     Main = Window:AddTab({ Title = "▎Main", Icon = "home" }), 
     Others = Window:AddTab({ Title = "▎Others", Icon = "star" }),
     Teleports = Window:AddTab({ Title = "▎Teleports", Icon = "map" }),
-    Visuals = Window:AddTab({ Title = "▎Visuals", Icon = "eye" }),
     Player = Window:AddTab({ Title = "▎Player", Icon = "user" }),
     Settings = Window:AddTab({ Title = "▎UI Settings", Icon = "settings" }),
 }
